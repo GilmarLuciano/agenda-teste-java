@@ -346,4 +346,12 @@ public class Usuarios implements Serializable {
 		return ResponseEntity.noContent().build();
 		
 	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+ 	public ResponseEntity<Void> update(@RequestBody UserDTO objDto, @PathVariable String id) {
+		UsuariosRecursos obj = UsuariosRecursos.fromDTO(objDto);
+		obj.setId(id);
+		obj = UsuariosRecursos.update(obj);
+		return ResponseEntity.noContent().build();
+	}
 }
