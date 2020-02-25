@@ -13,7 +13,7 @@ public class UsuariosRecursos {
 	
 	@GetMapping
 	public ResponseEntity<Usuarios> findAll () {
-		Usuarios u = new Usuarios ("maria", "25/01/1980", "30036188877", "rua um", "11 80304059");
+		Usuarios u = new Usuarios (1L, "maria", "25/01/1980", "30036188877", "rua um", "11", "rua", "casa", "não tem", "berrini", "sao paulo", "09870-830", "980304010", "11", "055", "10", "20", "null");
 		return ResponseEntity.ok().body(u);
 	}
 
