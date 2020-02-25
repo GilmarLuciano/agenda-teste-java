@@ -330,12 +330,20 @@ public class Usuarios implements Serializable {
 		return ResponseEntity.ok().body(list);
 		List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
-	
+ 	}
+ 	
 	@RequestMapping(method=RequestMethod.POST)
  	public ResponseEntity<Void> insert(@RequestBody UsuariosRecursos objDto) {
 		Usuarios obj = UsuariosRecursos.FromDTO(objDto);
 		obj = UsuariosRecursos.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+ 	public ResponseEntity<Void> delete(@PathVariable String id) {
+		UsuariosRecursos.delete(id);
+		return ResponseEntity.noContent().build();
+		
 	}
 }
