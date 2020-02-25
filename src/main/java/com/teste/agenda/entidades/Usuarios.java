@@ -1,11 +1,22 @@
 package com.teste.agenda.entidades;
 
 import java.io.Serializable;
+import java.net.URI;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.teste.agenda.recursos.UsuariosRecursos;
+
+import antlr.collections.List;
 
 @Entity
 public class Usuarios implements Serializable {
@@ -312,10 +323,19 @@ public class Usuarios implements Serializable {
 		return true;
 	}
 
+	@RequestMapping(method=RequestMethod.GET)
+ 	public ResponseEntity<List<Usuarios>> findAll() {
+ 	public ResponseEntity<List<UsuariosDTO>> findAll() {
+		List<User> list = service.findAll();
+		return ResponseEntity.ok().body(list);
+		List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	
-
-	
-	
-	
-
+	@RequestMapping(method=RequestMethod.POST)
+ 	public ResponseEntity<Void> insert(@RequestBody UsuariosRecursos objDto) {
+		Usuarios obj = UsuariosRecursos.FromDTO(objDto);
+		obj = UsuariosRecursos.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
+	}
 }
